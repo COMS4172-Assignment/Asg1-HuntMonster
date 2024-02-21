@@ -12,6 +12,7 @@ public class PartyRoom : MonoBehaviour
     public static PartyRoom Instance { get { return _instance; } }
 
     public Transform[] platforms;
+    private bool[] collected;
     public GameObject air_creatures;
     public GameObject sea_creature;
     public GameObject land_creature;
@@ -29,7 +30,7 @@ public class PartyRoom : MonoBehaviour
     }
     void Start()
     {
-        
+        collected = new bool[6];
     }
 
     // Update is called once per frame
@@ -37,15 +38,31 @@ public class PartyRoom : MonoBehaviour
     {
         if (ct==Creature.LandCreature)
         {
-            Instantiate(land_creature, platforms[(int)ct].position+Vector3.up*3, platforms[(int)ct].rotation);
+            if (!collected[(int)Creature.LandCreature])
+            {
+                Instantiate(land_creature, platforms[(int)ct].position+Vector3.up*8, platforms[(int)ct].rotation, platforms[(int)ct]);
+                collected[(int)Creature.LandCreature] = true;
+            }
         }
         else if (ct == Creature.SeaCreature)
         {
-            Instantiate(sea_creature, platforms[(int)ct].position + Vector3.up * 3, platforms[(int)ct].rotation);
+            if (!collected[(int)Creature.SeaCreature])
+            {
+                Instantiate(sea_creature, platforms[(int)ct].position + Vector3.up * 8, platforms[(int)ct].rotation, platforms[(int)ct]);
+                collected[(int)Creature.SeaCreature] = true;
+            }
         }
         else if (ct == Creature.AirCreature)
         {
-            Instantiate(air_creatures, platforms[(int)ct].position + Vector3.up * 3, platforms[(int)ct].rotation);
+            if (!collected[(int)Creature.AirCreature])
+            {
+                Instantiate(air_creatures, platforms[(int)ct].position + Vector3.up * 8, platforms[(int)ct].rotation, platforms[(int)ct]);
+                collected[(int)Creature.AirCreature] = true;
+            }
+        }
+        if(collected[(int)Creature.LandCreature] && collected[(int)Creature.SeaCreature] && collected[(int)Creature.AirCreature])
+        {
+            GameScript.Instance.win();
         }
     }
 

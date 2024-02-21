@@ -13,6 +13,10 @@ public class GameScript : MonoBehaviour
     public Camera cam2;
     public Camera cam3;
     public bool partyRoom;
+    public GameObject partyRoomUI;
+    public GameObject gameUI;
+    public GameObject WinUI;
+    public GameObject LoseUI;
 
     public static GameScript Instance { get { return _instance; } }
 
@@ -31,7 +35,10 @@ public class GameScript : MonoBehaviour
 
     private void Start()
     {
+        WinUI.SetActive(false);
+        LoseUI.SetActive(false);
         switch_cam1();
+        switch_game_room();
         partyRoom = false;
     }
 
@@ -48,23 +55,6 @@ public class GameScript : MonoBehaviour
                 switch_game_room();
             }
         }
-    }
-
-    public void switch_party_room()
-    {
-        //SceneManager.LoadScene("GameScene");
-        switch_cam3();
-        partyRoom=true;
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-    }
-    void switch_game_room()
-    {
-        //SceneManager.LoadScene("Game",LoadSceneMode.Additive);
-        switch_cam1();
-        partyRoom = false;
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
     }
 
     public void switch_cam1()
@@ -97,4 +87,47 @@ public class GameScript : MonoBehaviour
         }
     }
 
+    public void switch_party_room()
+    {
+        switch_cam3();
+        partyRoomUI.SetActive(true);
+        gameUI.SetActive(false);
+        WinUI.SetActive(false);
+        LoseUI.SetActive(false);
+        partyRoom = true;
+    }
+    public void switch_game_room()
+    {
+        switch_cam1();
+        partyRoomUI.SetActive(false);
+        gameUI.SetActive(true);
+        WinUI.SetActive(false);
+        LoseUI.SetActive(false);
+        partyRoom = false;
+    }
+
+    public void lose()
+    {
+        LoseUI.SetActive(true) ;
+        WinUI.SetActive(false) ;
+        gameUI.SetActive(false) ;
+        partyRoomUI.SetActive(false ) ;
+    }
+
+    public void win()
+    {
+        WinUI.SetActive(true) ;
+        LoseUI.SetActive(false );
+        gameUI.SetActive(false);
+        partyRoomUI.SetActive(false);
+    }
+
+    public void exit()
+    {
+        Application.Quit();
+    }
+    public void restart()
+    {
+        SceneManager.LoadScene("Game");
+    }
 }

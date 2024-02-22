@@ -8,11 +8,13 @@ public enum Creature { LandCreature, SeaCreature, AirCreature }
 public class GameScript : MonoBehaviour
 {
     private static GameScript _instance;
+    public bool partyRoom; // whether in party room
     public GameObject player;
+    // cameras
     public Camera cam1;
     public Camera cam2;
     public Camera cam3;
-    public bool partyRoom;
+    // UI control
     public GameObject partyRoomUI;
     public GameObject gameUI;
     public GameObject WinUI;
@@ -21,6 +23,7 @@ public class GameScript : MonoBehaviour
     public static GameScript Instance { get { return _instance; } }
 
 
+    // singleton pattern
     private void Awake()
     {
         if (_instance != null && _instance != this)
@@ -35,6 +38,7 @@ public class GameScript : MonoBehaviour
 
     private void Start()
     {
+        // on game start, set up game room, and disable party room
         WinUI.SetActive(false);
         LoseUI.SetActive(false);
         switch_cam1();
@@ -42,20 +46,6 @@ public class GameScript : MonoBehaviour
         partyRoom = false;
     }
 
-    private void Update()
-    {
-        if (Input.GetKeyUp(KeyCode.P)) 
-        {
-            if (!partyRoom)
-            {
-                switch_party_room();
-            }
-            else
-            {
-                switch_game_room();
-            }
-        }
-    }
 
     public void switch_cam1()
     {
@@ -78,7 +68,7 @@ public class GameScript : MonoBehaviour
         cam3.enabled = true;
     }
 
-    public void toggle_perspective()
+    public void toggle_perspective() // change player camera
     {
         if (!cam3.enabled)
         {
@@ -87,7 +77,7 @@ public class GameScript : MonoBehaviour
         }
     }
 
-    public void switch_party_room()
+    public void switch_party_room() // switch to party room
     {
         switch_cam3();
         partyRoomUI.SetActive(true);
@@ -96,7 +86,7 @@ public class GameScript : MonoBehaviour
         LoseUI.SetActive(false);
         partyRoom = true;
     }
-    public void switch_game_room()
+    public void switch_game_room() // switch to game room
     {
         switch_cam1();
         partyRoomUI.SetActive(false);
@@ -106,7 +96,7 @@ public class GameScript : MonoBehaviour
         partyRoom = false;
     }
 
-    public void lose()
+    public void lose() // lose
     {
         LoseUI.SetActive(true) ;
         WinUI.SetActive(false) ;
@@ -114,7 +104,7 @@ public class GameScript : MonoBehaviour
         partyRoomUI.SetActive(false ) ;
     }
 
-    public void win()
+    public void win() // win
     {
         WinUI.SetActive(true) ;
         LoseUI.SetActive(false );
@@ -122,11 +112,11 @@ public class GameScript : MonoBehaviour
         partyRoomUI.SetActive(false);
     }
 
-    public void exit()
+    public void exit() // exit
     {
         Application.Quit();
     }
-    public void restart()
+    public void restart() // restart
     {
         SceneManager.LoadScene("Game");
     }

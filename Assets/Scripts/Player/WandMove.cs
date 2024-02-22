@@ -5,20 +5,13 @@ using UnityEngine.UI;
 
 public class WandMiove : MonoBehaviour
 {
-    public Scrollbar scrollbar;
-    float rotation;
+    public Scrollbar scrollbar; // connect the direction of the wand
     float dest_rotation;
-    public Quaternion show;
-    void Start()
-    {
-        
-    }
 
-    // Update is called once per frame
     void Update()
     {
-        dest_rotation = (scrollbar.value - 0.5f) * 90;
-        show = transform.localRotation;
+        dest_rotation = (scrollbar.value - 0.5f) * 90; // scrollbar.value is 0-1, so -0.5f to make it -0.5f to 0.5f, then *90 to make it -45 to 45
+        // note localRotation.x is not in Euler angle
         transform.localRotation = Quaternion.Euler(transform.localRotation.eulerAngles.x,dest_rotation, transform.localRotation.eulerAngles.z);
     }
 }

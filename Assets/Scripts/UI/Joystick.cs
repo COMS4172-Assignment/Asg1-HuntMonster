@@ -4,19 +4,20 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
+// this script is from https://assetstore.unity.com/packages/tools/input-management/joystick-pack-107631
 public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPointerUpHandler
 {
     public float Horizontal { get { return (snapX) ? SnapFloat(input.x, AxisOptions.Horizontal) : input.x; } }
     public float Vertical { get { return (snapY) ? SnapFloat(input.y, AxisOptions.Vertical) : input.y; } }
     public Vector2 Direction { get { return new Vector2(Horizontal, Vertical); } }
 
-    public float HandleRange
+    public float HandleRange // the range of the joystick
     {
         get { return handleRange; }
         set { handleRange = Mathf.Abs(value); }
     }
 
-    public float DeadZone
+    public float DeadZone   // the dead zone of the joystick
     {
         get { return deadZone; }
         set { deadZone = Mathf.Abs(value); }
@@ -146,11 +147,12 @@ public class Joystick : MonoBehaviour, IPointerDownHandler, IDragHandler, IPoint
 
     public virtual void OnPointerUp(PointerEventData eventData)
     {
+        // reset the input and handle position
         input = Vector2.zero;
         handle.anchoredPosition = Vector2.zero;
     }
 
-    protected Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition)
+    protected Vector2 ScreenPointToAnchoredPosition(Vector2 screenPosition) // convert the screen position to anchored position
     {
         Vector2 localPoint = Vector2.zero;
         if (RectTransformUtility.ScreenPointToLocalPointInRectangle(baseRect, screenPosition, cam, out localPoint))

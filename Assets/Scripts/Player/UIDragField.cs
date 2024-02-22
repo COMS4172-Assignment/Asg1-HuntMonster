@@ -5,14 +5,14 @@ using UnityEngine.EventSystems;
 
 public class UIDragField : MonoBehaviour , IPointerDownHandler, IPointerUpHandler
 {
+    [HideInInspector] // hide the variable in the inspector
+    public Vector2 TouchDist; // feed to rotation control
     [HideInInspector]
-    public Vector2 TouchDist;
+    public Vector2 PointerOld; // old touch position
     [HideInInspector]
-    public Vector2 PointerOld;
+    public int PointerId; // assigned at the beginning of the touch
     [HideInInspector]
-    protected int PointerId;
-    [HideInInspector]
-    public bool Pressed;
+    public bool Pressed; // whether the screen touch field is pressed
 
     // Use this for initialization
     void Start()
@@ -25,7 +25,7 @@ public class UIDragField : MonoBehaviour , IPointerDownHandler, IPointerUpHandle
     {
         if (Pressed)
         {
-            if (PointerId >= 0 && PointerId < Input.touches.Length)
+            if (PointerId >= 0 && PointerId < Input.touches.Length)// if the touch is on the screen
             {
                 TouchDist = Input.touches[PointerId].position - PointerOld;
                 PointerOld = Input.touches[PointerId].position;
@@ -42,7 +42,7 @@ public class UIDragField : MonoBehaviour , IPointerDownHandler, IPointerUpHandle
         }
     }
 
-    public void OnPointerDown(PointerEventData eventData)
+    public void OnPointerDown(PointerEventData eventData) // when finger touch the screen
     {
         Pressed = true;
         PointerId = eventData.pointerId;
@@ -50,7 +50,7 @@ public class UIDragField : MonoBehaviour , IPointerDownHandler, IPointerUpHandle
     }
 
 
-    public void OnPointerUp(PointerEventData eventData)
+    public void OnPointerUp(PointerEventData eventData) // when finger leave the screen
     {
         Pressed = false;
     }
